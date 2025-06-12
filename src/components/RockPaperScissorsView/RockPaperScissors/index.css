@@ -1,0 +1,226 @@
+.AppContainer {
+  background-color: #223a5f;
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ResultContainer {
+  padding: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  width: 65%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 60px;
+}
+.Option {
+  font-size: 16px;
+  font-family: 'Roboto';
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.OptionsContainer {
+  display: flex;
+  flex-direction: column;
+}
+.ScoreContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 10px;
+}
+.ScorePhrase {
+  font-size: 16px;
+  font-family: 'Roboto';
+  font-weight: 700;
+  color: #223a5f;
+}
+.ScoreNumber {
+  font-size: 16px;
+  font-family: 'Roboto';
+  font-weight: 700;
+  color: #223a5f;
+}
+.GameViewContainer {
+  width: 65%;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.GameOptionsList {
+  padding-left: 0px;
+  margin-left: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  max-width: 480px;
+  flex-wrap: wrap;
+}
+
+.button {
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Roboto';
+  color: #223a5f;
+  margin: 8px;
+  padding: 8px 15px 8px 15px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+.PopUpContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.button {
+  border: none;
+  cursor: pointer;
+  outline: none;
+  background-color: transparent;
+}
+.PopUpImage {
+  width: 90%;
+  align-self: center;
+}
+.PopUpBody {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+}
+.GameResultViewContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 560px;
+}
+.SelectedOptionsContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 600px;
+}
+.GameUserOptionContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.GameParticipantText {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Roboto';
+}
+
+.GameParticipantChoiceImage {
+  height: 170px;
+  width: 170px;
+}
+.ResultText {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Roboto';
+  text-align: center;
+}
+.PlayAgainButton {
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Roboto';
+  color: #223a5f;
+  margin: 8px;
+  padding: 8px 15px 8px 15px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  align-self: center;
+}
+.rock-paper-rules {
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.rps-start-button {
+  height: 48px;
+  gap: 0px;
+  border-radius: 4px;
+  opacity: 0px;
+  background-color: #ffffff;
+  color: #223a5f;
+  font-family: Bree Serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  border: none;
+  outline: none;
+  align-self: flex-start;
+  margin-bottom: 2%;
+}
+.rps-back-button-styling {
+  height: 32px;
+  top: 64px;
+  left: 165px;
+  gap: 8px;
+  opacity: 0px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-family: Bree Serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: left;
+  color: #ffffff;
+}
+.rps-active-state-link-styling {
+  text-decoration: none;
+  color: inherit;
+  align-self: flex-start;
+}
+.response-icon {
+  height: 50px;
+  width: 50px;
+  align-content: center;
+  margin-left: 30px;
+}
+.two {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+.rps-start-button {
+  height: 48px;
+  gap: 0px;
+  border-radius: 4px;
+  opacity: 0px;
+  background-color: #ffffff;
+  color: #223a5f;
+  font-family: Bree Serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  border: none;
+  outline: none;
+  align-self: flex-start;
+  margin-bottom: 2%;
+  margin-left: 45%;
+}

@@ -1,0 +1,14 @@
+.OptionImage {
+  width: 170px;
+  height: 170px;
+}
+.OptionListItem {
+  list-style-type: none;
+  display: flex;
+}
+.GameOptionButton {
+  outline: none;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}

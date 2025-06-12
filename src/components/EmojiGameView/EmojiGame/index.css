@@ -1,0 +1,93 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(
+    to bottom right,
+    #9796f0 0.5%,
+    #fbc7d4 150%
+  );
+  min-height: 100vh;
+}
+
+.emoji-game-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.emojis-list-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 80%;
+  margin: auto;
+  padding: 0px;
+  max-width: 1000px;
+}
+.TriggerButton {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  align-self: flex-start;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.link-styling {
+  color: inherit;
+  text-decoration: none;
+  align-self: start;
+  padding-left: 20px;
+}
+
+.back-button-styling {
+  height: 32px;
+  top: 64px;
+  left: 105px;
+  gap: 8px;
+  opacity: 0px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-family: Bree Serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.back-popup-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding-top: 20px;
+  flex-direction: column;
+}
+
+.rules-heading {
+  color: #334155;
+  font-family: Roboto;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 48px;
+  text-align: center;
+}
+
+.unordered-list-styling-interface {
+  color: #475569;
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 32px;
+  text-align: start;
+  margin-left: 20px;
+}
+.link-container {
+  display: flex;
+}
