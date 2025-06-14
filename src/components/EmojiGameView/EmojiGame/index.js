@@ -1,6 +1,6 @@
 import {Component} from 'react'
 import {Link} from 'react-router-dom'
-import Popup from 'reactjs-popup'
+import Modal from 'react-modal'
 import {BiArrowBack} from 'react-icons/bi'
 import {RiCloseLine} from 'react-icons/ri'
 
@@ -88,11 +88,14 @@ const gameState = {
   result: 'RESULT',
 }
 
+Modal.setAppElement('#root')
+
 class EmojiGame extends Component {
   state = {
     clickedEmojisList: [],
     topScore: 0,
     view: gameState.rules,
+    isModalOpen: false,
   }
 
   resetGame = () => {
@@ -138,43 +141,34 @@ class EmojiGame extends Component {
           <BiArrowBack /> Back
         </button>
       </Link>
-      <h2 className="rules-heading">Rules</h2>
-      <ul className="unordered-list-styling-interface">
-        <li>User should be able to see the list of Emojis.</li>
-        <li>
-          When the user clicks any one of the Emoji for the first time, then the
-          count of the score should be incremented by 1 and the List of emoji
-          cards should be shuffled.
-        </li>
-        <li>
-          This process should be repeated every time the user clicks on an emoji
-          card.
-        </li>
-        <li>
-          When the user clicks on all Emoji cards without clicking any of it
-          twice, then the user will win the game.
-        </li>
-        <li>
-          When the user clicks on the same Emoji for the second time, then the
-          user will lose the game.
-        </li>
-        <li>
-          Once the game is over, the user will be redirected to the results
-          page.
-        </li>
-      </ul>
-      <button
-        className="rps-start-button"
-        type="button"
-        onClick={() => this.setState({view: gameState.active})}
-      >
-        Start Playing
-      </button>
+      <div className="back-container">
+        <h2 className="rules-heading">Rules</h2>
+        <ul className="unordered-list-styling-interface">
+          <li>User should be able to see the list of Emojis.</li>
+          <li>
+            Clicking an emoji for the first time increments the score and
+            shuffles the list.
+          </li>
+          <li>Repeat this process each time a new emoji is clicked.</li>
+          <li>Clicking all emojis without repeating wins the game.</li>
+          <li>Clicking the same emoji twice ends the game with a loss.</li>
+          <li>The result screen appears after game ends.</li>
+        </ul>
+        <button
+          className="TriggerButton"
+          type="button"
+          onClick={() => this.setState({view: gameState.active})}
+        >
+          Start Playing
+        </button>
+      </div>
     </div>
   )
 
   renderEmojis = () => {
     const shuffled = this.getShuffledEmojis()
+    const {isModalOpen} = this.state
+
     return (
       <div className="link-container">
         <Link to="/" className="link-styling">
@@ -191,33 +185,39 @@ class EmojiGame extends Component {
             />
           ))}
         </ul>
-        <Popup
-          modal
-          trigger={
-            <button className="TriggerButton" type="button">
-              Rules
-            </button>
-          }
+
+        <button
+          className="TriggerButton"
+          type="button"
+          onClick={() => this.setState({isModalOpen: true})}
         >
-          {close => (
-            <div className="PopUpBody">
-              <img
-                className="PopUpImage"
-                src="https://assets.ccbp.in/frontend/content/react-js/emoji-game-rules-v2.jpg"
-                alt="rules"
-              />
-              <button
-                aria-label="Close"
-                data-testid="close"
-                className="CloseButton"
-                type="button"
-                onClick={() => close()}
-              >
-                <RiCloseLine />
-              </button>
-            </div>
-          )}
-        </Popup>
+          Rules
+        </button>
+
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={() => this.setState({isModalOpen: false})}
+          contentLabel="Rules"
+          className="modal-content"
+          overlayClassName="modal-overlay"
+        >
+          <div className="PopUpBody">
+            <img
+              className="PopUpImage"
+              src="https://assets.ccbp.in/frontend/content/react-js/emoji-game-rules-v2.jpg"
+              alt="rules"
+            />
+            <button
+              aria-label="Close"
+              data-testid="close"
+              className="CloseButton"
+              type="button"
+              onClick={() => this.setState({isModalOpen: false})}
+            >
+              <RiCloseLine />
+            </button>
+          </div>
+        </Modal>
       </div>
     )
   }

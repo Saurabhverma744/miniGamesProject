@@ -1,17 +1,14 @@
 import {Component} from 'react'
-
 import {Link} from 'react-router-dom'
-
 import {BiArrowBack} from 'react-icons/bi'
-
 import {RiCloseLine} from 'react-icons/ri'
-
-import Popup from 'reactjs-popup'
-
-import 'reactjs-popup/dist/index.css'
+import Modal from 'react-modal'
 
 import GameOptions from '../GameOptions'
 import './index.css'
+
+// Set accessibility root
+Modal.setAppElement('#root')
 
 const choicesList = [
   {
@@ -45,6 +42,15 @@ class RockPaperScissors extends Component {
     gameStatus: gameStatusConstant.notInProgress,
     userChoice: '',
     gameChoice: '',
+    isRulesOpen: false,
+  }
+
+  openRulesModal = () => {
+    this.setState({isRulesOpen: true})
+  }
+
+  closeRulesModal = () => {
+    this.setState({isRulesOpen: false})
   }
 
   onClickSetUserChoice = id => {
@@ -58,85 +64,108 @@ class RockPaperScissors extends Component {
   }
 
   onClickGoToGameView = () => {
-    this.setState({
-      gameStatus: gameStatusConstant.inProgress,
-    })
+    this.setState({gameStatus: gameStatusConstant.inProgress})
   }
 
   getGameChoice = () => {
-    const gameChoicesList = choicesList.map(choice => choice.id)
     const randomIndex = Math.floor(Math.random() * 3)
-    return gameChoicesList[randomIndex]
+    return choicesList[randomIndex].id
   }
 
   evaluateGame = () => {
     const {userChoice, gameChoice} = this.state
     if (userChoice === gameChoice) {
-      this.setState({
-        gameStatus: gameStatusConstant.draw,
-      })
-    } else if (userChoice === 'rock') {
-      if (gameChoice === 'scissor') {
-        this.setState(prevState => ({
-          gameStatus: gameStatusConstant.win,
-          score: prevState.score + 1,
-        }))
-      } else {
-        this.setState(prevState => ({
-          gameStatus: gameStatusConstant.loss,
-          score: prevState.score - 1,
-        }))
-      }
-    } else if (userChoice === 'paper') {
-      if (gameChoice === 'rock') {
-        this.setState(prevState => ({
-          gameStatus: gameStatusConstant.win,
-          score: prevState.score + 1,
-        }))
-      } else {
-        this.setState(prevState => ({
-          gameStatus: gameStatusConstant.loss,
-          score: prevState.score - 1,
-        }))
-      }
-    } else if (userChoice === 'scissor') {
-      if (gameChoice === 'paper') {
-        this.setState(prevState => ({
-          gameStatus: gameStatusConstant.win,
-          score: prevState.score + 1,
-        }))
-      } else {
-        this.setState(prevState => ({
-          gameStatus: gameStatusConstant.loss,
-          score: prevState.score - 1,
-        }))
-      }
+      this.setState({gameStatus: gameStatusConstant.draw})
+    } else if (
+      (userChoice === 'rock' && gameChoice === 'scissor') ||
+      (userChoice === 'paper' && gameChoice === 'rock') ||
+      (userChoice === 'scissor' && gameChoice === 'paper')
+    ) {
+      this.setState(prev => ({
+        gameStatus: gameStatusConstant.win,
+        score: prev.score + 1,
+      }))
+    } else {
+      this.setState(prev => ({
+        gameStatus: gameStatusConstant.loss,
+        score: prev.score - 1,
+      }))
     }
   }
 
   onStartGame = () => {
-    this.setState({
-      gameStatus: gameStatusConstant.inProgress,
-    })
+    this.setState({gameStatus: gameStatusConstant.inProgress})
   }
 
   renderGameInProgressView = () => (
     <ul className="GameOptionsList">
-      {choicesList.map(eachOption => (
+      {choicesList.map(each => (
         <GameOptions
-          key={eachOption.id}
-          optionDetails={eachOption}
+          key={each.id}
+          optionDetails={each}
           onClickSetUserChoice={this.onClickSetUserChoice}
         />
       ))}
     </ul>
   )
 
+  renderGameResultView = resultText => {
+    const {gameChoice, userChoice} = this.state
+    const userChoiceObj = choicesList.find(choice => choice.id === userChoice)
+    const gameChoiceObj = choicesList.find(choice => choice.id === gameChoice)
+
+    return (
+      <div className="GameResultViewContainer">
+        <div className="SelectedOptionsContainer">
+          <div className="GameUserOptionContainer">
+            <p className="GameParticipantText">You</p>
+            <img
+              className="GameParticipantChoiceImage"
+              src={userChoiceObj.imageUrl}
+              alt="your choice"
+            />
+          </div>
+          <div className="GameUserOptionContainer">
+            <p className="GameParticipantText">Other</p>
+            <img
+              className="GameParticipantChoiceImage"
+              src={gameChoiceObj.imageUrl}
+              alt="opponent choice"
+            />
+          </div>
+        </div>
+        <p className="ResultText">{resultText}</p>
+        <button
+          className="PlayAgainButton"
+          type="button"
+          onClick={this.onClickGoToGameView}
+        >
+          PLAY AGAIN
+        </button>
+      </div>
+    )
+  }
+
+  renderGameView = () => {
+    const {gameStatus} = this.state
+    switch (gameStatus) {
+      case gameStatusConstant.inProgress:
+        return this.renderGameInProgressView()
+      case gameStatusConstant.win:
+        return this.renderGameResultView('You Won')
+      case gameStatusConstant.loss:
+        return this.renderGameResultView('You Lose')
+      case gameStatusConstant.draw:
+        return this.renderGameResultView('IT IS DRAW')
+      default:
+        return null
+    }
+  }
+
   renderGameNotInProgressView = () => (
     <div className="rock-paper-rules">
       <Link to="/" className="rps-active-state-link-styling">
         <button type="button" className="rps-back-button-styling">
-          {' '}
           <BiArrowBack /> Back
         </button>
       </Link>
@@ -148,6 +177,7 @@ class RockPaperScissors extends Component {
       />
       <h1 className="rules-text">Rules</h1>
       <ul className="rps-rules-unordered-styling">
+        {/* Keep your rules list here */}
         <li className="list-item-styling">
           The game result should be based on user and user opponent choices
         </li>
@@ -208,164 +238,16 @@ class RockPaperScissors extends Component {
     </div>
   )
 
-  renderGameWonView = () => {
-    const {gameChoice, userChoice} = this.state
-    const userChoiceObjectList = choicesList.filter(
-      choice => choice.id === userChoice,
-    )
-    const userChoiceObject = userChoiceObjectList[0]
-    const gameChoiceObjectList = choicesList.filter(
-      choice => choice.id === gameChoice,
-    )
-    const gameChoiceObject = gameChoiceObjectList[0]
-
-    return (
-      <div className="GameResultViewContainer">
-        <div className="SelectedOptionsContainer">
-          <div className="GameUserOptionContainer">
-            <p className="GameParticipantText">You</p>
-            <img
-              className="GameParticipantChoiceImage"
-              src={userChoiceObject.imageUrl}
-              alt="your choice"
-            />
-          </div>
-          <div className="GameUserOptionContainer">
-            <p className="GameParticipantText">Other</p>
-            <img
-              className="GameParticipantChoiceImage"
-              src={gameChoiceObject.imageUrl}
-              alt="opponent choice"
-            />
-          </div>
-        </div>
-
-        <p className="ResultText">You Won</p>
-        <button
-          className="PlayAgainButton"
-          type="button"
-          onClick={this.onClickGoToGameView}
-        >
-          PLAY AGAIN
-        </button>
-      </div>
-    )
-  }
-
-  renderGameLostView = () => {
-    const {gameChoice, userChoice} = this.state
-
-    const userChoiceObjectList = choicesList.filter(
-      choice => choice.id === userChoice,
-    )
-    const userChoiceObject = userChoiceObjectList[0]
-    const gameChoiceObjectList = choicesList.filter(
-      choice => choice.id === gameChoice,
-    )
-    const gameChoiceObject = gameChoiceObjectList[0]
-
-    return (
-      <div className="GameResultViewContainer">
-        <div className="SelectedOptionsContainer">
-          <div className="GameUserOptionContainer">
-            <p className="GameParticipantText">You</p>
-            <img
-              className="GameParticipantChoiceImage"
-              src={userChoiceObject.imageUrl}
-              alt="your choice"
-            />
-          </div>
-          <div className="GameUserOptionContainer">
-            <p className="GameParticipantText">Other</p>
-            <img
-              className="GameParticipantChoiceImage"
-              src={gameChoiceObject.imageUrl}
-              alt="opponent choice"
-            />
-          </div>
-        </div>
-        <p className="ResultText">You Lose</p>
-        <button
-          className="PlayAgainButton"
-          type="button"
-          onClick={this.onClickGoToGameView}
-        >
-          PLAY AGAIN
-        </button>
-      </div>
-    )
-  }
-
-  renderGameDrawView = () => {
-    const {gameChoice, userChoice} = this.state
-    const userChoiceObjectList = choicesList.filter(
-      choice => choice.id === userChoice,
-    )
-    const userChoiceObject = userChoiceObjectList[0]
-    const gameChoiceObjectList = choicesList.filter(
-      choice => choice.id === gameChoice,
-    )
-    const gameChoiceObject = gameChoiceObjectList[0]
-
-    return (
-      <div className="GameResultViewContainer">
-        <div className="SelectedOptionsContainer">
-          <div className="GameUserOptionContainer">
-            <p className="GameParticipantText">You</p>
-            <img
-              className="GameParticipantChoiceImage"
-              src={userChoiceObject.imageUrl}
-              alt="your choice"
-            />
-          </div>
-          <div className="GameUserOptionContainer">
-            <p className="GameParticipantText">Other</p>
-            <img
-              className="GameParticipantChoiceImage"
-              src={gameChoiceObject.imageUrl}
-              alt="opponent choice"
-            />
-          </div>
-        </div>
-        <p className="ResultText">IT IS DRAW</p>
-        <button
-          className="PlayAgainButton"
-          type="button"
-          onClick={this.onClickGoToGameView}
-        >
-          PLAY AGAIN
-        </button>
-      </div>
-    )
-  }
-
-  renderGameView = () => {
-    const {gameStatus} = this.state
-    switch (gameStatus) {
-      case gameStatusConstant.inProgress:
-        return this.renderGameInProgressView()
-      case gameStatusConstant.win:
-        return this.renderGameWonView()
-      case gameStatusConstant.loss:
-        return this.renderGameLostView()
-      case gameStatusConstant.draw:
-        return this.renderGameDrawView()
-      default:
-        return null
-    }
-  }
-
   render() {
-    const {score, gameStatus} = this.state
+    const {score, gameStatus, isRulesOpen} = this.state
     return (
       <div className="AppContainer">
-        {gameStatus === 'NOT_IN_PROGRESS' ? (
+        {gameStatus === gameStatusConstant.notInProgress ? (
           this.renderGameNotInProgressView()
         ) : (
           <>
             <Link to="/" className="rps-active-state-link-styling two">
               <button type="button" className="rps-back-button-styling">
-                {' '}
                 <BiArrowBack /> Back
               </button>
             </Link>
@@ -387,36 +269,39 @@ class RockPaperScissors extends Component {
               </div>
             </div>
             <div className="GameViewContainer">{this.renderGameView()}</div>
+
             <div className="PopUpContainer">
-              <Popup
-                modal
-                trigger={
-                  <button className="TriggerButton" type="button">
-                    Rules
-                  </button>
-                }
-                closeOnEscape
-                window
+              <button
+                className="TriggerButton"
+                type="button"
+                onClick={this.openRulesModal}
               >
-                {close => (
-                  <div className="PopUpBody">
-                    <img
-                      className="PopUpImage"
-                      src="https://assets.ccbp.in/frontend/content/react-js/rock-paper-scissor-rules-v2.jpg"
-                      alt="rules"
-                    />
-                    <button
-                      aria-label="Close"
-                      data-testid="close"
-                      className="CloseButton"
-                      type="button"
-                      onClick={() => close()}
-                    >
-                      <RiCloseLine />
-                    </button>
-                  </div>
-                )}
-              </Popup>
+                Rules
+              </button>
+              <Modal
+                isOpen={isRulesOpen}
+                onRequestClose={this.closeRulesModal}
+                className="ModalContent"
+                overlayClassName="ModalOverlay"
+                contentLabel="Game Rules"
+              >
+                <div className="PopUpBody">
+                  <img
+                    className="PopUpImage"
+                    src="https://assets.ccbp.in/frontend/content/react-js/rock-paper-scissor-rules-v2.jpg"
+                    alt="rules"
+                  />
+                  <button
+                    aria-label="Close"
+                    data-testid="close"
+                    className="CloseButton"
+                    type="button"
+                    onClick={this.closeRulesModal}
+                  >
+                    <RiCloseLine />
+                  </button>
+                </div>
+              </Modal>
             </div>
           </>
         )}

@@ -28,13 +28,16 @@
 .TriggerButton {
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   border: none;
   outline: none;
   border-radius: 10px;
   align-self: flex-start;
-  padding-top: 10px;
-  margin-top: 10px;
+  padding-top: 15px;
+  margin-top: 50px;
+  align-self: center;
+  font-weight: bold;
+  margin-right: 30px;
 }
 
 .link-styling {
@@ -76,7 +79,8 @@
   font-size: 32px;
   font-weight: 700;
   line-height: 48px;
-  text-align: center;
+  margin-bottom: 50px;
+  margin-right: 150px;
 }
 
 .unordered-list-styling-interface {
@@ -90,4 +94,44 @@
 }
 .link-container {
   display: flex;
+}
+.back-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 80vh;
+  padding: 20px;
+}
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  max-width: 500px;
+  border-radius: 12px;
+  outline: none;
+  position: relative;
+}
+
+.PopUpImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.CloseButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
 }
